@@ -1,5 +1,7 @@
+import { productListReducer } from "./productReducer";
+
 const { combineReducers } = require("redux");
 
-export default () => {
-  return {};
-};
+export default combineReducers({
+  productList: productListReducer,
+});
