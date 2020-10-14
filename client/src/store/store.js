@@ -4,7 +4,14 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import reducers from "./reducers/index";
 
 const middleware = [reduxThunk];
-const initialState = {};
+
+const cartItemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+
+const initialState = {
+  cart: { cartItems: cartItemsFromStorage },
+};
 
 const store = createStore(
   reducers,

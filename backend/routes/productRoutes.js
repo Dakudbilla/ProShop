@@ -1,7 +1,9 @@
 import express from "express";
-import asyncHandler from "express-async-handler";
-import Product from "../models/ProductModel.js";
-import mongoose from "mongoose";
+
+import {
+  getProducts,
+  getProductsBydId,
+} from "../controllers/productController.js";
 const router = express.Router();
 
 /**
@@ -10,14 +12,7 @@ const router = express.Router();
  * @access         Public
  *
  * */
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    const products = await Product.find();
-
-    res.status(200).json(products);
-  })
-);
+router.route("/").get(getProducts);
 
 /**
  * @description    Fetch single product
@@ -25,22 +20,6 @@ router.get(
  * @access         Public
  *
  * */
-router.get(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      throw new Error("Product not Found");
-    }
-
-    const product = await Product.findById(req.params.id);
-
-    if (product) {
-      res.status(200).json(product);
-    } else {
-      res.status(404);
-      throw new Error("Product not Found");
-    }
-  })
-);
+router.route("/:id").get(getProductsBydId);
 
 export default router;
