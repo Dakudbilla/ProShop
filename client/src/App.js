@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
+import LoginScreen from "./screens/LoginScreen";
 const App = () => (
   <Router>
     <Header />
@@ -15,6 +16,8 @@ const App = () => (
           <HomeScreen />
         </Route>
         <Route path="/product/:id" component={ProductScreen} />
+        <Route path="/login" component={LoginScreen} />
+
         <Route path="/cart/:id?" component={CartScreen} />
       </Container>
     </main>

@@ -5,14 +5,23 @@ import reducers from "./reducers/index";
 
 const middleware = [reduxThunk];
 
+//Inital cart items from localstorage
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
+//Initial userInfo Info
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
+
+//Initial State
 const initialState = {
   cart: { cartItems: cartItemsFromStorage },
+  userLogin: { userInfo: userInfoFromStorage },
 };
 
+//Create stroe
 const store = createStore(
   reducers,
   initialState,
