@@ -1,4 +1,4 @@
-const { CART_ADD_ITEM, CART_REMOVE_ITEM } = require("../types");
+const { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_CLEAR } = require("../types");
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
   const { type, payload } = action;
@@ -24,6 +24,12 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       return {
         ...state,
         cartItems: state.cartItems.filter((item) => item.product !== payload),
+      };
+
+    case CART_CLEAR:
+      return {
+        ...state,
+        cartItems: [],
       };
     default:
       return state;
