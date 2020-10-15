@@ -1,6 +1,14 @@
-const { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_CLEAR } = require("../types");
+const {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_CLEAR,
+  CART_SAVE_SHIPPING_ADDRESS,
+} = require("../types");
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
+export const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  action
+) => {
   const { type, payload } = action;
   switch (type) {
     case CART_ADD_ITEM:
@@ -25,7 +33,11 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((item) => item.product !== payload),
       };
-
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        shippingAddress: payload,
+      };
     case CART_CLEAR:
       return {
         ...state,

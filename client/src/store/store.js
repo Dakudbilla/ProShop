@@ -5,6 +5,11 @@ import reducers from "./reducers/index";
 
 const middleware = [reduxThunk];
 
+//Inital shipping Address from localstorage
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {};
+
 //Inital cart items from localstorage
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -17,7 +22,10 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 
 //Initial State
 const initialState = {
-  cart: { cartItems: cartItemsFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    shippingAddress: shippingAddressFromStorage,
+  },
   userLogin: { userInfo: userInfoFromStorage },
 };
 
