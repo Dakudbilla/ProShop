@@ -21,7 +21,6 @@ const CartScreen = ({ match, location, history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-  console.log(cartItems);
   useEffect(() => {
     productId && dispatch(addToCart(productId, quantity));
   }, [dispatch, productId, quantity]);
@@ -48,7 +47,12 @@ const CartScreen = ({ match, location, history }) => {
               <ListGroup.Item key={item.product}>
                 <Row>
                   <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rouded />
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fluid
+                      rouded="true"
+                    />
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
@@ -78,7 +82,7 @@ const CartScreen = ({ match, location, history }) => {
                       variant="danger"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
-                      <i class="fas fa-trash" aria-hidden="true"></i>
+                      <i className="fas fa-trash" aria-hidden="true"></i>
                     </Button>
                   </Col>
                 </Row>
