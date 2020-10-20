@@ -1,4 +1,5 @@
 import { cartReducer } from "./cartReducers";
+import { orderCreateReducer, orderDetailsReducer } from "./OrderReducer";
 import { productListReducer, singleProductReducer } from "./productReducer";
 import {
   userLoginReducer,
@@ -17,4 +18,6 @@ export default combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 });
