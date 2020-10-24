@@ -1,5 +1,9 @@
 import { cartReducer } from "./cartReducers";
-import { orderCreateReducer, orderDetailsReducer } from "./OrderReducer";
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderPayReducer,
+} from "./OrderReducer";
 import { productListReducer, singleProductReducer } from "./productReducer";
 import {
   userLoginReducer,
@@ -20,4 +24,5 @@ export default combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
 });
