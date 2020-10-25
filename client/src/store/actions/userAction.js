@@ -19,6 +19,9 @@ import {
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
 } from "../types";
 
 //User login action
@@ -212,6 +215,38 @@ export const listUsers = () => async (dispatch, getState) => {
   } catch (err) {
     dispatch({
       type: USER_LIST_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+//Get User details
+export const deleteUser = (id) => async (dispatch, getState) => {
+  console.log("I got here");
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/users/${id}`, config);
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+    });
+  } catch (err) {
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message
