@@ -2,10 +2,11 @@ import express from "express";
 import {
   authUser,
   getUserProfile,
+  getUsers,
   registerUser,
   updateUserProfile,
 } from "../controllers/userController.js";
-import { protect } from "../middleware/authMiddleWare.js";
+import { admin, protect } from "../middleware/authMiddleWare.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const router = express.Router();
  * @access         Public
  *
  * */
-router.route("/").post(registerUser);
+router.route("/").post(registerUser).get(protect, admin, getUsers);
 
 /**
  * @description   Auth user and get token

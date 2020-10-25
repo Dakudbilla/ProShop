@@ -9,6 +9,10 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_RESET,
+  MY_ORDERS_REQUEST,
+  MY_ORDERS_SUCCESS,
+  MY_ORDERS_FAIL,
+  CART_CLEAR,
 } from "../types";
 import axios from "axios";
 //Create Order Actions
@@ -103,12 +107,51 @@ export const payOrder = (orderId, paymentResult) => async (
       type: ORDER_PAY_SUCCESS,
       payload: data,
     });
+
+    dispatch({
+      type: CART_CLEAR,
+    });
   } catch (err) {
     dispatch({
       type: ORDER_PAY_RESET,
     });
     dispatch({
       type: ORDER_PAY_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+// Order payment
+export const listMyOrders = () => async (dispatch, getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  try {
+    dispatch({
+      type: MY_ORDERS_REQUEST,
+    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(
+      `/api/orders/myorders`,
+
+      config
+    );
+
+    dispatch({
+      type: MY_ORDERS_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: MY_ORDERS_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message
