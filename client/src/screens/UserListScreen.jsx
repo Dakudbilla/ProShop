@@ -1,35 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import {
-  deleteUser,
-  listUsers,
-  register,
-} from "../store/actions/userAction.js";
-import FormContainer from "../components/FormContainer";
+import { deleteUser, listUsers } from "../store/actions/userAction.js";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
 const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
+
+  //Get list of users
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
+  //Get logged in user info
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  //Get deletion status from state
   const userDelete = useSelector((state) => state.userDelete);
   const { success: successDelete } = userDelete;
 
   useEffect(() => {
+    //Check if logged in user is admin before fetching users
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
       history.push("/");
     }
+
+    //If userlist is not availabel fetch them
+    if (!userList) {
+      dispatch(listUsers());
+    }
   }, [dispatch, successDelete]);
 
+  //Handle delete user by id
   const deleteHandler = (id) => {
     if (window.confirm("Are you Sure ?")) {
       dispatch(deleteUser(id));
@@ -72,14 +78,14 @@ const UserListScreen = ({ history }) => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/users/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/users/${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
                   </LinkContainer>
 
                   <Button
-                    variant="light"
+                    variant="danger"
                     className="btn-sm"
                     onClick={() => deleteHandler(user._id)}
                   >

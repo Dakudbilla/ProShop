@@ -5,7 +5,11 @@ import {
   orderListMyReducer,
   orderPayReducer,
 } from "./OrderReducer";
-import { productListReducer, singleProductReducer } from "./productReducer";
+import {
+  productDeleteReducer,
+  productListReducer,
+  singleProductReducer,
+} from "./productReducer";
 import {
   userLoginReducer,
   userRegisterReducer,
@@ -13,6 +17,7 @@ import {
   userUpdateProfileReducer,
   userListReducer,
   userDeleteReducer,
+  userUpdateReducer,
 } from "./userReducer";
 
 const { combineReducers } = require("redux");
@@ -20,6 +25,7 @@ const { combineReducers } = require("redux");
 export default combineReducers({
   productList: productListReducer,
   product: singleProductReducer,
+  deleteProduct: productDeleteReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -31,4 +37,5 @@ export default combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   myOrders: orderListMyReducer,
+  userUpdate: userUpdateReducer,
 });

@@ -5,6 +5,9 @@ import {
   PRODUCT_FAIL,
   PRODUCT_REQUEST,
   PRODUCT_SUCCESS,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
 } from "../types";
 
 ///Get all products
@@ -37,6 +40,23 @@ export const singleProductReducer = (
       return { loading: false, product: payload };
     case PRODUCT_FAIL:
       return { loading: false, error: payload };
+    default:
+      return state;
+  }
+};
+
+//Reducer to handle delete delete action
+export const productDeleteReducer = (state = {}, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case PRODUCT_DELETE_REQUEST:
+      return { loading: true };
+    case PRODUCT_DELETE_SUCCESS:
+      return { success: true };
+    case PRODUCT_DELETE_FAIL:
+      return { loading: false, error: payload };
+
     default:
       return state;
   }

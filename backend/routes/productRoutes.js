@@ -1,8 +1,12 @@
 import express from "express";
+import { protect, admin } from "../middleware/authMiddleWare.js";
 
 import {
+  createProduct,
+  deleteProduct,
   getProducts,
   getProductsBydId,
+  updateProduct,
 } from "../controllers/productController.js";
 const router = express.Router();
 
@@ -12,7 +16,7 @@ const router = express.Router();
  * @access         Public
  *
  * */
-router.route("/").get(getProducts);
+router.route("/").get(getProducts).post(protect, admin, createProduct);
 
 /**
  * @description    Fetch single product
@@ -20,6 +24,10 @@ router.route("/").get(getProducts);
  * @access         Public
  *
  * */
-router.route("/:id").get(getProductsBydId);
+router
+  .route("/:id")
+  .get(getProductsBydId)
+  .delete(protect, admin, deleteProduct)
+  .put(protect, admin, updateProduct);
 
 export default router;

@@ -7,6 +7,9 @@ const {
   PRODUCT_FAIL,
   PRODUCT_REQUEST,
   PRODUCT_SUCCESS,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
 } = require("../types");
 
 export const listProducts = () => async (dispatch) => {
@@ -43,6 +46,37 @@ export const getProduct = (id) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: PRODUCT_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+//delete product
+export const deleteProductAction = (id) => async (dispatch, getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  try {
+    dispatch({
+      type: PRODUCT_DELETE_REQUEST,
+    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/products/${id}`, config);
+
+    dispatch({
+      type: PRODUCT_DELETE_SUCCESS,
+    });
+  } catch (err) {
+    dispatch({
+      type: PRODUCT_DELETE_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message

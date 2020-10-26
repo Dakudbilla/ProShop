@@ -147,3 +147,50 @@ export const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
+/**
+ * @description   GET a User
+ * @route          GET /api/users/:id
+ * @access         Private / admin
+ *
+ * */
+export const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+/**
+ * @description   Update User user
+ * @route          PUT /api/users/:id
+ * @access         admin/Private
+ *
+ * */
+export const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+
+  if (user) {
+    //check if name or password or email was passed before updating
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
+
+    const updatedUser = await user.save();
+    const { _id, name, email, isAdmin } = updatedUser;
+
+    res.json({
+      _id,
+      name,
+      email,
+      isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not Found");
+  }
+});
