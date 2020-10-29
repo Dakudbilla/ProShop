@@ -13,6 +13,14 @@ import {
   MY_ORDERS_SUCCESS,
   MY_ORDERS_FAIL,
   MY_ORDERS_RESET,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  ALL_ORDERS_RESET,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_RESET,
 } from "../types";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -90,6 +98,31 @@ export const orderPayReducer = (state = {}, action) => {
   }
 };
 
+//Order delivery reducer
+export const orderDeliverReducer = (state = {}, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case ORDER_DELIVER_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_DELIVER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case ORDER_DELIVER_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
+    case ORDER_DELIVER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
 //my orderslist reducer
 export const orderListMyReducer = (state = { orders: [] }, action) => {
   const { type, payload } = action;
@@ -110,6 +143,31 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
       };
     case MY_ORDERS_RESET:
       return { orders: [] };
+    default:
+      return state;
+  }
+};
+
+//admin orderslist reducer
+export const orderListReducer = (state = { allorders: [] }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case ALL_ORDERS_REQUEST:
+      return {
+        loading: true,
+      };
+    case ALL_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        allorders: payload,
+      };
+    case ALL_ORDERS_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
+    case ALL_ORDERS_RESET:
+      return { allorders: [] };
     default:
       return state;
   }

@@ -13,6 +13,13 @@ import {
   MY_ORDERS_SUCCESS,
   MY_ORDERS_FAIL,
   CART_CLEAR,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  ALL_ORDERS_RESET,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
 } from "../types";
 import axios from "axios";
 //Create Order Actions
@@ -125,7 +132,42 @@ export const payOrder = (orderId, paymentResult) => async (
   }
 };
 
-// Order payment
+// Order delivery
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+
+  try {
+    dispatch({
+      type: ORDER_DELIVER_REQUEST,
+    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+// my orders
 export const listMyOrders = () => async (dispatch, getState) => {
   const {
     userLogin: { userInfo },
@@ -152,6 +194,41 @@ export const listMyOrders = () => async (dispatch, getState) => {
   } catch (err) {
     dispatch({
       type: MY_ORDERS_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+// all  orders
+export const listOrders = () => async (dispatch, getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  try {
+    dispatch({
+      type: ALL_ORDERS_REQUEST,
+    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(
+      `/api/orders/`,
+
+      config
+    );
+
+    dispatch({
+      type: ALL_ORDERS_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: ALL_ORDERS_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message

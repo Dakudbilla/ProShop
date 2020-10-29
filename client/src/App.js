@@ -19,6 +19,7 @@ import Switch from "react-bootstrap/esm/Switch";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
+import OrderListScreen from "./screens/OrderListScreen";
 const App = () => {
   return (
     <Router>
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/placeorder" component={PlaceOrderScreen} />
             <Route path="/admin/userlist" component={UserListScreen} />
             <Route path="/admin/productlist" component={ProductListScreen} />
+            <Route path="/admin/orderlist" component={OrderListScreen} />
 
             <Route path="/payment" component={PaymentScreen} />
             <Route path="/order/:id" component={OrderScreen} />

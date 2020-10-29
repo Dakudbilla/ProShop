@@ -65,7 +65,7 @@ export const getOrderById = asyncHandler(async (req, res) => {
 
 /**
  * @description    Update order to paid
- * @route         PUT /api/orders/id
+ * @route         PUT /api/orders/:id/pay
  * @access         Private
  *
  * */
@@ -105,5 +105,44 @@ export const getMyOrders = asyncHandler(async (req, res) => {
     res.json(orders);
   } catch (err) {
     throw new Error("Ooops Error finding Orders");
+  }
+});
+
+/**
+ * @description    Get all orders
+ * @route         GET /api/orders
+ * @access         Private/ADMIN
+ *
+ * */
+export const getOrders = asyncHandler(async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate("user", "id name");
+    res.json(orders);
+  } catch (err) {
+    throw new Error("Ooops Error finding Orders");
+  }
+});
+
+/**
+ * @description    Update order to delivered
+ * @route         PUT /api/orders/:id/delivered
+ * @access         Private/admin
+ *
+ * */
+export const updateOrderToDelivered = asyncHandler(async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    throw new Error("Order not Found");
+  }
+
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order Not Found");
   }
 });
