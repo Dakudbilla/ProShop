@@ -18,7 +18,7 @@ const UserEditScreen = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { user } = userDetails;
+  const { user, loading } = userDetails;
 
   const userUpdate = useSelector((state) => state.userUpdate);
   const {
@@ -26,6 +26,10 @@ const UserEditScreen = ({ history, match }) => {
     error: errorUpdate,
     success: successUpdate,
   } = userUpdate;
+
+  //Get logged in user info
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -46,14 +50,14 @@ const UserEditScreen = ({ history, match }) => {
         setEmail(user.email);
       }
     }
-  }, [user, successUpdate, history, dispatch]);
+  }, [user, userId, successUpdate, history, dispatch]);
 
   return (
     <>
       <Link to="/admin/userlist" className="btn btn-light my-3">
         Go Back
       </Link>
-
+      {loading && <Loader />}
       <FormContainer>
         <h1>Edit User</h1>
         {loadingUpdate ? (
@@ -66,6 +70,7 @@ const UserEditScreen = ({ history, match }) => {
               <Form.Label>Name </Form.Label>
               <Form.Control
                 type="text"
+                disabled={loading}
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -76,15 +81,17 @@ const UserEditScreen = ({ history, match }) => {
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
+                disabled={loading}
                 placeholder="Enter your Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></Form.Control>
             </Form.Group>
-
+            {console.log(user._id)}
+            {console.log(userId)}
             <Form.Group controlId="isAdmin">
               <Form.Check
-                disabled={user._id === userId}
+                disabled={userInfo._id === userId}
                 type="checkbox"
                 label="Is Admin"
                 checked={isAdmin}

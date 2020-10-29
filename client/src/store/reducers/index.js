@@ -6,8 +6,10 @@ import {
   orderPayReducer,
 } from "./OrderReducer";
 import {
+  productCreateReducer,
   productDeleteReducer,
   productListReducer,
+  productUpdateReducer,
   singleProductReducer,
 } from "./productReducer";
 import {
@@ -26,6 +28,8 @@ export default combineReducers({
   productList: productListReducer,
   product: singleProductReducer,
   deleteProduct: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

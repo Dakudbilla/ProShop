@@ -33,7 +33,7 @@ const UserListScreen = ({ history }) => {
     if (!userList) {
       dispatch(listUsers());
     }
-  }, [dispatch, successDelete]);
+  }, [dispatch, successDelete, history]);
 
   //Handle delete user by id
   const deleteHandler = (id) => {

@@ -2,20 +2,30 @@ import React, { useEffect } from "react";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { delel, listUsers } from "../store/actions/userAction.js";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
   listProducts,
   deleteProductAction,
+  createProduct,
 } from "../store/actions/productActions.js";
+import { PRODUCT_CREATE_RESET } from "../store/types.js";
 
-const ProductListScreen = ({ history, match }) => {
+const ProductListScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   //Get products from state
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
+
+  //Get newly created product
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    loading: createLoading,
+    error: createError,
+    product: createdProduct,
+    success: successCreate,
+  } = productCreate;
 
   //Get login user Details
   const userLogin = useSelector((state) => state.userLogin);
@@ -29,18 +39,18 @@ const ProductListScreen = ({ history, match }) => {
     error: deleteError,
   } = deleteProduct;
   useEffect(() => {
-    //Check if the logged in user is an Admin
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts());
-    } else {
-      history.push("/login");
-    }
+    dispatch({ type: PRODUCT_CREATE_RESET });
 
-    //If the product list is empty add products to list
-    if (!productList) {
+    //Check if the logged in user is an Admin
+    if (!userInfo.isAdmin) {
+      history.push("/");
+    }
+    if (successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`);
+    } else {
       dispatch(listProducts());
     }
-  }, [dispatch, userInfo, deleteSuccess]);
+  }, [dispatch, history, userInfo.isAdmin, deleteSuccess, successCreate]);
 
   //Handle admin deleting a product
   const deleteHandler = (id) => {
@@ -50,9 +60,8 @@ const ProductListScreen = ({ history, match }) => {
   };
 
   //Handle admin adding a product
-
-  const createProductHandler = (product) => {
-    //create product
+  const createProductHandler = () => {
+    dispatch(createProduct());
   };
 
   return (
@@ -67,7 +76,10 @@ const ProductListScreen = ({ history, match }) => {
           </Button>
         </Col>
       </Row>
-      {deleteLoading ? <Loader /> : deleteError ? deleteError : null}
+      {deleteLoading && <Loader />}
+      {createLoading && <Loader />}
+      {deleteError && <Message variant="danger">{deleteError}</Message>}
+      {createError && <Message variant="danger">{createError}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

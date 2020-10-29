@@ -12,7 +12,11 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts());
-  }, [dispatch]);
+
+    if (error) {
+      dispatch(listProducts());
+    }
+  }, [dispatch, error]);
 
   return (
     <>
