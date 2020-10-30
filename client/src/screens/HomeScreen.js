@@ -5,18 +5,20 @@ import Product from "../components/Product";
 import { listProducts } from "../store/actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+  const keyword = match.params.keyword;
+  const pageNumber = match.params.pageNumber || 1;
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(listProducts(keyword, pageNumber));
 
     if (error) {
       dispatch(listProducts());
     }
-  }, [dispatch, error]);
+  }, [dispatch, error, keyword, pageNumber]);
 
   return (
     <>

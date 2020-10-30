@@ -3,6 +3,7 @@ import { protect, admin } from "../middleware/authMiddleWare.js";
 
 import {
   createProduct,
+  createProductReview,
   deleteProduct,
   getProducts,
   getProductsBydId,
@@ -29,5 +30,13 @@ router
   .get(getProductsBydId)
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
+
+/**
+ * @description    Fetch single product
+ * @route          POST /api/products/:id/reviews
+ * @access         PRIVATE
+ *
+ * */
+router.route("/:id/reviews").post(protect, createProductReview);
 
 export default router;
