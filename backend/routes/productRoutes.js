@@ -7,6 +7,7 @@ import {
   deleteProduct,
   getProducts,
   getProductsBydId,
+  getTopProducts,
   updateProduct,
 } from "../controllers/productController.js";
 const router = express.Router();
@@ -18,6 +19,7 @@ const router = express.Router();
  *
  * */
 router.route("/").get(getProducts).post(protect, admin, createProduct);
+router.route("/top").get(getTopProducts);
 
 /**
  * @description    Fetch single product
