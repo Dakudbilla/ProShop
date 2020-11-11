@@ -9,6 +9,10 @@ import { LinkContainer } from "react-router-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listMyOrders } from "../store/actions/orderActions.js";
+import {
+  USER_DETAILS_SUCCESS,
+  USER_UPDATE_PROFILE_RESET,
+} from "../store/types.js";
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState("");
@@ -43,7 +47,9 @@ const ProfileScreen = ({ history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        //get profile details of logged in user
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrders());
       } else {
@@ -51,8 +57,7 @@ const ProfileScreen = ({ history }) => {
         setEmail(user.email);
       }
     }
-  }, [history, userInfo, dispatch, user]);
-
+  }, [history, userInfo, dispatch, user, success]);
   return (
     <Row>
       <Col md={3}>

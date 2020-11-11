@@ -9,8 +9,10 @@ import mongoose from "mongoose";
  *
  * */
 export const getProducts = asyncHandler(async (req, res) => {
+  const allproducts = await Product.find();
+  console.log(req.params);
   //Number of products per page
-  const pageSize = 3;
+  const pageSize = 9;
   const page = Number(req.query.pageNumber) || 1;
 
   //query by keyword
@@ -27,10 +29,12 @@ export const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
-
-  res
-    .status(200)
-    .json({ products, page, pages: Math.ceil(productCount / pageSize) });
+  res.status(200).json({
+    products,
+    page,
+    pages: Math.ceil(productCount / pageSize),
+    allproducts,
+  });
 });
 
 /**
@@ -47,7 +51,7 @@ export const getProductsBydId = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } else {
     res.status(404);
     throw new Error("Product not Found");

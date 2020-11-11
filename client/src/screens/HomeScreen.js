@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
@@ -7,6 +8,8 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
+import Meta from "../components/Meta";
+import { Link } from "react-router-dom";
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
@@ -24,7 +27,14 @@ const HomeScreen = ({ match }) => {
 
   return (
     <>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
       <hr />
       {/**
@@ -40,8 +50,17 @@ const HomeScreen = ({ match }) => {
       ) : (
         <>
           <Row>
+            {products.length === 0 && keyword && (
+              <Message>No Product Matches this Search</Message>
+            )}
             {products.map((product) => (
-              <Col sm={12} md={6} lg={4} key={product._id}>
+              <Col
+                className="align-items-stretch d-flex"
+                sm={12}
+                md={6}
+                lg={4}
+                key={product._id}
+              >
                 <Product product={product} />
               </Col>
             ))}

@@ -111,6 +111,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       name,
       email,
       isAdmin,
+      token: generateToken(_id),
     });
   } else {
     res.status(404);

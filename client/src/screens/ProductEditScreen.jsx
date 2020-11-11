@@ -23,7 +23,6 @@ const ProductEditScreen = ({ history, match }) => {
   const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
-  console.log(image);
   //Get product details
   const singleProduct = useSelector((state) => state.product);
   const { loading, error, product } = singleProduct;

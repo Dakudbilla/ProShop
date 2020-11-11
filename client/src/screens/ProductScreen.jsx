@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../store/types";
+import Meta from "../components/Meta";
 const ProductScreen = ({ match, history }) => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -70,9 +71,15 @@ const ProductScreen = ({ match, history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              {console.log(product)}
+              <Image
+                src={`${window.location.origin}/${product.image}`}
+                alt={product.name}
+                fluid
+              />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">

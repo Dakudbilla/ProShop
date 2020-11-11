@@ -26,10 +26,25 @@ app.use("/api/uploads", uploadRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
+const folder = path.resolve();
+app.use("/uploads", express.static(path.join(folder, "/uploads")));
 
-const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  //use static build of react app
+  app.use(express.static(path.join(folder, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(folder, "client", "build", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Api Running Succesfully");
+  });
+}
 
-app.use("/uploads", express.static(path.join(__dirname, "/uploads/")));
+app.get("/", (req, res) => {
+  res.send("Api Running Succesfully");
+});
+//app.use("/uploads", express.static(path.join(__dirname, "/uploads/")));
 app.use(notFound);
 
 app.use(errorHandler);
@@ -38,10 +53,6 @@ connectDB();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-
-app.get("/", (req, res) => {
-  res.send("Api Running Succesfully");
-});
 
 app.listen(PORT, () => {
   console.log(

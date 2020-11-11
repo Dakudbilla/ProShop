@@ -24,7 +24,7 @@ const {
   PRODUCT_TOP_FAIL,
 } = require("../types");
 
-export const listProducts = (keyword = " ", pageNumber = "") => async (
+export const listProducts = (keyword = "", pageNumber = "") => async (
   dispatch
 ) => {
   try {
@@ -54,7 +54,6 @@ export const listTopProducts = () => async (dispatch) => {
     dispatch({ type: PRODUCT_TOP_REQUEST });
 
     const { data } = await axios.get(`/api/products/top`);
-    console.log(data);
     dispatch({
       type: PRODUCT_TOP_SUCCESS,
       payload: data,
