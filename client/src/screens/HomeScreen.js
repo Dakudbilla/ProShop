@@ -19,11 +19,10 @@ const HomeScreen = ({ match }) => {
 
   useEffect(() => {
     dispatch(listProducts(keyword, pageNumber));
-
     if (error) {
       dispatch(listProducts());
     }
-  }, [dispatch, error, keyword, pageNumber]);
+  }, [ keyword, pageNumber,dispatch]);
 
   return (
     <>
